@@ -1,10 +1,7 @@
-import sys
-x=sys.stdin.read().split()
-y=set()
+import sys,itertools as i
+y={}
 z=0
-for i in range(10000000):
-    z+=int(x[i%len(x)])
-    if z in y:
-        print z
-        break
-    y.add(z)
+for j in i.cycle(sys.stdin):
+ z+=int(j)
+ if z in y:print z;break
+ y[z]=1

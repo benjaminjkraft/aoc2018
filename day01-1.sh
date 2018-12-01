@@ -1,1 +1,1 @@
-tr '\n' ' ' | sed s/^/print\ /g | python
+(echo -n print;tr \\n \ )|python
