@@ -1,0 +1,28 @@
+#(comment "
+import sys, itertools
+input = list(map(int, sys.stdin))
+print(sum(input))
+seen = set()
+s = 0
+for i in itertools.cycle(input):
+    s += i
+    if s in seen:
+        print(s)
+        break
+    seen.add(s)
+'''
+")
+
+(defn traverse [input sum seen]
+  (def new-sum (+ sum (first input)))
+  (if (contains? seen new-sum)
+    new-sum
+    (recur (rest input) new-sum (conj seen new-sum))))
+
+(defn main []
+  (def input (map read-string (line-seq (java.io.BufferedReader. *in*))))
+  (println (reduce + input))
+  (println (traverse (cycle input) 0 (hash-set))))
+
+(do (main))
+;'''
