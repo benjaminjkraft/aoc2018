@@ -4,22 +4,19 @@ use std::hash::Hash;
 use std::io;
 use std::io::BufRead;
 
-fn counter<T: Eq + Hash, I: Iterator<Item = T>>(items: I) -> HashMap<T, u32> {
-    let mut counts = HashMap::new();
+fn count_into<T: Eq + Hash, I: IntoIterator<Item = T>>(counts: &mut HashMap<T, i32>, items: I) {
     for item in items {
         *counts.entry(item).or_insert(0) += 1;
     }
-    counts
 }
 
 fn part1<'a, I: Iterator<Item = &'a String>>(lines: I) -> i32 {
-    let mut counts = HashMap::new();
+    let mut counts: HashMap<i32, i32> = HashMap::new();
     for line in lines {
-        let char_counts = counter(line.chars());
-        let vals: HashSet<&u32> = char_counts.values().collect();
-        for val in vals {
-            *counts.entry(val.clone()).or_insert(0) += 1;
-        }
+        let mut char_counts = HashMap::new();
+        count_into(&mut char_counts, line.chars());
+        let mut char_set: HashSet<i32> = char_counts.values().map(|v| v.clone()).collect();
+        count_into(&mut counts, char_set);
     }
     counts.get(&2).unwrap_or(&0) * counts.get(&3).unwrap_or(&0) 
 }
